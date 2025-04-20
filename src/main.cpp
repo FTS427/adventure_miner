@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <filesystem>
@@ -14,11 +15,10 @@ int main(int argc, char* args[]) {
 
     if ( c_data.empty() ) {
         io::error("Read config failed or config is empty!");
-        bool gen_config = io::y_or_n("Would you want to general a new config now?");
+        bool gen_config = io::y_or_n("Would you want to general a new config now?", false);
         if ( gen_config ) {
-            io::info("Where do you want to save your game data?");
+            io::question("Where do you want to save your game data?", true);
             std::string game_data;
-            printf("> ");
             std::cin >> game_data;
             
             toml::table root_node, new_config_data;

@@ -1,6 +1,7 @@
 #ifndef IO_HPP_
 #define IO_HPP_
 
+#include <fmt/base.h>
 #pragma once
 
 #include <cstdio>
@@ -56,21 +57,28 @@ namespace io {
                    PROJECT_NAME, PROJECT_AUTHOR, PROJECT_DESCRIPTION, PROJECT_VERSION, PROJECT_LICENSE, PROJECT_REPO);
     }
 
-    inline void error(const std::string& error_info) { fmt::print("{}[ERROR]{} {}\n", ERROR_COLOR, RESET_COLOR, error_info); }
-    inline void done(const std::string& done_info) { fmt::print("{}[DONE]{} {}\n", DONE_COLOR, RESET_COLOR, done_info); }
-    inline void info(const std::string& info_info) { fmt::print("{}[INFO]{} {}\n", INFO_COLOR, RESET_COLOR, info_info); }
-    inline void warn(const std::string& warn_info) { fmt::print("{}[WARN]{} {}\n", WARN_COLOR, RESET_COLOR, warn_info); }
+    inline void error(const std::string& error_info) { fmt::println("{}[ERROR]{} {}", ERROR_COLOR, RESET_COLOR, error_info); }
+    inline void done(const std::string& done_info) { fmt::println("{}[DONE]{} {}", DONE_COLOR, RESET_COLOR, done_info); }
+    inline void info(const std::string& info_info) { fmt::println("{}[INFO]{} {}", INFO_COLOR, RESET_COLOR, info_info); }
+    inline void warn(const std::string& warn_info) { fmt::println("{}[WARN]{} {}", WARN_COLOR, RESET_COLOR, warn_info); }
+
+    inline void question(const std::string& question_text, bool nl) {
+        if ( nl ) {
+            fmt::println("{}", question_text);
+            printf("> ");
+        }
+        else { fmt::print("{} ", question_text); }
+    }
 
     inline bool args_parse( char* args, const char* cmd) {
         if ( std::strcmp(args, cmd) == 0 ) { return true; }
         else { return false; }
     }
 
-    inline bool y_or_n(const std::string& question) {
+    inline bool y_or_n(const std::string& question_text, bool nl) {
         std::string input;
-        info(question + " [y/n] ");
         while (true) {
-            printf("> ");
+            io::question(question_text + " [y/n]", nl);
             std::cin >> input;
             
             auto left = std::find_if_not(input.begin(), input.end(), ::isspace);

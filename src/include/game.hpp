@@ -1,6 +1,7 @@
 #ifndef GAME_HPP_
 #define GAME_HPP_
 
+#include "io.hpp"
 #pragma once
 
 #include <string>
@@ -138,10 +139,10 @@ namespace game {
     };
 
     inline Player login(std::filesystem::path player_data_path) {
-        printf("Enter your game name: ");
+        io::question("Enter your game name:", false);
         char pl_name[128], pl_passwd[128];
         scanf("%s", pl_name);
-        printf("Enter password: ");
+        io::question("Enter password:", false);
         scanf("%s", pl_passwd);
 
         game::Player pl(pl_name, pl_passwd, 0);
@@ -162,7 +163,7 @@ namespace game {
             else if ( load_status == 2 ) { io::error("Empty player's data file!"); }
             else { io::error("Can't find " + pl.get_name() + "'s data!"); }
 
-                bool input_status = io::y_or_n("You are new, would you want to save your data?");
+                bool input_status = io::y_or_n("You are new, would you want to save your data?", false);
                 if ( input_status ) {
                     if ( pl.save_data(player_data_path) ) {
                         io::done("Data saved!");
