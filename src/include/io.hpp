@@ -3,6 +3,8 @@
 
 #include <fmt/base.h>
 #include <iostream>
+#include <random>
+#include <thread>
 #include <toml++/impl/parse_error.hpp>
 #include <toml++/impl/parser.hpp>
 #include <toml++/impl/table.hpp>
@@ -54,6 +56,18 @@ namespace io {
             else if ( input_resault == "N" || input_resault == "n" ) { return false; }
             else { io::error("Wrong input, enter again!"); }
         }
+    }
+
+    inline void game_print(const std::string& text, bool nl) {
+        std::random_device rd;
+        std::uniform_int_distribution<int> dist(100,300);
+        std::mt19937 gen(rd());
+        for (char t: text) {
+            printf("%c",t);
+            fflush(stdout);
+            std::this_thread::sleep_for(std::chrono::milliseconds(dist(gen)));
+        }
+        if (nl) { printf("\n"); }
     }
 } // namespace io
 

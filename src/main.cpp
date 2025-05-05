@@ -1,6 +1,4 @@
-#include <cmath>
 #include <cstdio>
-#include <cstring>
 #include <filesystem>
 #include <string>
 #include <toml++/toml.hpp>
@@ -35,6 +33,8 @@ main(int argc, char* args[ ]) {
 
     game::Player player =
         game::login(config_data ["global"]["game_data"].as_string( )->get( ));
+    
+    io::game_print("Welcome to Adventure Miner!", true);
 
     return 0;
     }
